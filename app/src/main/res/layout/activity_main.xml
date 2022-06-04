@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#121212"
     tools:context=".MainActivity">
 
     <ProgressBar
@@ -25,8 +24,7 @@
         android:id="@+id/timer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
-        android:textColor="@color/purple_500"
+        android:text="00:00"
         android:textSize="64sp"
         app:layout_constraintBottom_toBottomOf="@id/progress_bar"
         app:layout_constraintEnd_toEndOf="@id/progress_bar"
