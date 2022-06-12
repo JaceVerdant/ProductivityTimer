@@ -15,8 +15,14 @@ class MainViewModel : ViewModel() {
     val currentSeconds: LiveData<Int> = _currentSeconds
     val currentMinutes: LiveData<Int> = _currentMinutes
 
-    private val timer by lazy {
-        object : CountDownTimer(_currentMinutes.value!! * 60000L, 1000) {
+    private lateinit var timer: CountDownTimer
+
+    fun setCurrentMinutes(num: Int) {
+        _currentMinutes.value = num
+    }
+
+    fun start() {
+        timer = object : CountDownTimer(_currentMinutes.value!! * 60000L, 1000) {
             override fun onTick(p0: Long) {
                 if (_currentSeconds.value!! > 0) _currentSeconds.value =
                     _currentSeconds.value!! - 1
@@ -30,17 +36,23 @@ class MainViewModel : ViewModel() {
                 isStarted = false
             }
         }
-    }
 
-    fun setCurrentMinutes(num: Int) {
-        _currentMinutes.value = num
-    }
-
-    fun start() {
         timer.start()
     }
 
     fun stop() {
         timer.cancel()
+    }
+
+    fun reset() {
+        timer = object : CountDownTimer(0, 0) {
+            override fun onTick(p0: Long) {
+            }
+
+            override fun onFinish() {
+            }
+        }
+        _currentSeconds.value = 0
+        _currentMinutes.value = 0
     }
 }

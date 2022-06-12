@@ -29,8 +29,6 @@ class MainActivity : AppCompatActivity() {
             if (it.resultCode == RESULT_OK) {
                 val num = it.data?.getStringExtra("key")?.toInt()
                 if (num != null) {
-//                    b.startBtn.isClickable = true
-//                    b.stopBtn.isClickable = true
                     viewModel.setCurrentMinutes(num)
                 }
             }
@@ -66,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         b.stopBtn.setOnClickListener {
-            viewModel.stop()
+            viewModel.reset()
         }
     }
 }
