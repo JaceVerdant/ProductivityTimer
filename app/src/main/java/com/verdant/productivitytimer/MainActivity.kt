@@ -1,31 +1,44 @@
 package com.verdant.productivitytimer
 
-import android.app.AlertDialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.widget.TextView
-import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.ViewModelProvider
+import com.verdant.productivitytimer.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var timer: TextView
+    private lateinit var b: ActivityMainBinding
+    private lateinit var launchPicker: ActivityResultLauncher<Intent>
+
+    private val viewModel by lazy {
+        ViewModelProvider(this).get(MainViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        b = ActivityMainBinding.inflate(layoutInflater).also {
+            setContentView(it.root)
+        }
 
-        timer = findViewById(R.id.timer)
-
-        timer.setOnClickListener {
-            AlertDialog.Builder(this, R.style.Theme_ProductivityTimer)
-                .setTitle("Set timer")
-                .setView(LayoutInflater.from(this).inflate(R.layout.picker, null, false))
-                .setPositiveButton("Confirm") { _, _ ->
-                    Toast.makeText(this, "Ok", Toast.LENGTH_SHORT).show()
+        launchPicker = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                val num = it.data?.getStringExtra("key")?.toInt()
+                if (num != null) {
+                    viewModel.setCurrentMinutes(num)
                 }
-                .setNegativeButton(android.R.string.cancel, null)
-                .show()
+            }
+        }
+
+        viewModel.currentTimer.observe(this) {
+            b.timer.text = if (it < 10) "0$it:00" else "$it:00"
+        }
+
+        b.timer.setOnClickListener {
+            launchPicker.launch(Intent(this, PickerActivity::class.java))
         }
     }
 }
