@@ -27,9 +27,9 @@
         android:textSize="64sp"
         app:layout_constraintBottom_toBottomOf="@id/progress_bar"
         app:layout_constraintEnd_toStartOf="@id/delimiter"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="@id/progress_bar"
         app:layout_constraintTop_toTopOf="@id/progress_bar"
-        app:layout_constraintHorizontal_chainStyle="packed"
         tools:text="25" />
 
     <TextView

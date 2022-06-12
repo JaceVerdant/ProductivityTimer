@@ -1,14 +1,10 @@
 package com.verdant.productivitytimer
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.verdant.productivitytimer.databinding.ActivityMainBinding
 
@@ -27,10 +23,14 @@ class MainActivity : AppCompatActivity() {
             setContentView(it.root)
         }
 
+        var isStarted = false
+
         launchPicker = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == RESULT_OK) {
                 val num = it.data?.getStringExtra("key")?.toInt()
                 if (num != null) {
+//                    b.startBtn.isClickable = true
+//                    b.stopBtn.isClickable = true
                     viewModel.setCurrentMinutes(num)
                 }
             }
@@ -50,6 +50,23 @@ class MainActivity : AppCompatActivity() {
 
         b.seconds.setOnClickListener {
             launchPicker.launch(Intent(this, PickerActivity::class.java))
+        }
+
+        b.startBtn.setOnClickListener {
+
+            if (!isStarted) {
+                isStarted = true
+                b.startBtn.setImageResource(R.drawable.pause_icon)
+                viewModel.start()
+            } else {
+                isStarted = false
+                b.startBtn.setImageResource(R.drawable.play_icon)
+                viewModel.stop()
+            }
+        }
+
+        b.stopBtn.setOnClickListener {
+            viewModel.stop()
         }
     }
 }
