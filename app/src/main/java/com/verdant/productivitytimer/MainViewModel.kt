@@ -6,14 +6,13 @@ import androidx.lifecycle.ViewModel
 
 class MainViewModel : ViewModel() {
 
-    private val _currentTimer = MutableLiveData(0)
-    val currentTimer: LiveData<Int> = _currentTimer
+    private val _currentMinutes = MutableLiveData(0)
+    private val _currentSeconds = MutableLiveData(0)
 
-
-
+    val currentSeconds: LiveData<Int> = _currentSeconds
+    val currentMinutes: LiveData<Int> = _currentMinutes
 
     fun setCurrentMinutes(num: Int) {
-        _currentTimer.value = num
+        _currentMinutes.value = num
     }
-
 }

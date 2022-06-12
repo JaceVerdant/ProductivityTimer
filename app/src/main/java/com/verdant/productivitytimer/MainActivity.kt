@@ -1,11 +1,14 @@
 package com.verdant.productivitytimer
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.verdant.productivitytimer.databinding.ActivityMainBinding
 
@@ -33,11 +36,19 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.currentTimer.observe(this) {
-            b.timer.text = if (it < 10) "0$it:00" else "$it:00"
+        viewModel.currentMinutes.observe(this) {
+            b.minutes.text = if (it < 10) "0$it" else "$it"
         }
 
-        b.timer.setOnClickListener {
+        viewModel.currentSeconds.observe(this) {
+            b.seconds.text = if (it < 10) "0$it" else "$it"
+        }
+
+        b.minutes.setOnClickListener {
+            launchPicker.launch(Intent(this, PickerActivity::class.java))
+        }
+
+        b.seconds.setOnClickListener {
             launchPicker.launch(Intent(this, PickerActivity::class.java))
         }
     }
