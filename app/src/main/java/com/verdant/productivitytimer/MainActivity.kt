@@ -34,6 +34,14 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        viewModel.currentProgressMax.observe(this) {
+            b.progressBar.max = it
+        }
+
+        viewModel.currentProgress.observe(this) {
+            b.progressBar.progress = it
+        }
+
         viewModel.currentMinutes.observe(this) {
             b.minutes.text = if (it < 10) "0$it" else "$it"
         }

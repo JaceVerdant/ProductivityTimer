@@ -7,13 +7,15 @@ import androidx.lifecycle.ViewModel
 
 class MainViewModel : ViewModel() {
 
-    private var isStarted = false
-
     private val _currentMinutes = MutableLiveData(0)
     private val _currentSeconds = MutableLiveData(0)
+    private val _currentProgress = MutableLiveData(0)
+    private val _currentProgressMax = MutableLiveData(0)
 
     val currentSeconds: LiveData<Int> = _currentSeconds
     val currentMinutes: LiveData<Int> = _currentMinutes
+    val currentProgress: LiveData<Int> = _currentProgress
+    val currentProgressMax: LiveData<Int> = _currentProgressMax
 
     private lateinit var timer: CountDownTimer
 
@@ -22,8 +24,11 @@ class MainViewModel : ViewModel() {
     }
 
     fun start() {
-        timer = object : CountDownTimer(_currentMinutes.value!! * 60000L, 1000) {
+        val millis = if (_currentMinutes.value == 0) _currentSeconds.value!! * 1000L else _currentMinutes.value!! * 60000L
+        _currentProgressMax.value = millis.toInt() / 1000
+        timer = object : CountDownTimer(millis, 1000) {
             override fun onTick(p0: Long) {
+                _currentProgress.value = _currentProgress.value!! + 1
                 if (_currentSeconds.value!! > 0) _currentSeconds.value =
                     _currentSeconds.value!! - 1
                 else {
@@ -33,7 +38,6 @@ class MainViewModel : ViewModel() {
             }
 
             override fun onFinish() {
-                isStarted = false
             }
         }
 
@@ -45,6 +49,7 @@ class MainViewModel : ViewModel() {
     }
 
     fun reset() {
+        timer.cancel()
         timer = object : CountDownTimer(0, 0) {
             override fun onTick(p0: Long) {
             }
@@ -52,6 +57,8 @@ class MainViewModel : ViewModel() {
             override fun onFinish() {
             }
         }
+
+        _currentProgress.value = 0
         _currentSeconds.value = 0
         _currentMinutes.value = 0
     }

@@ -12,7 +12,7 @@
         android:layout_height="350dp"
         android:layout_marginTop="18dp"
         android:indeterminateOnly="false"
-        android:progress="75"
+        android:progress="0"
         android:progressDrawable="@drawable/circle"
         android:rotation="-90"
         app:layout_constraintEnd_toEndOf="parent"
@@ -30,7 +30,7 @@
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="@id/progress_bar"
         app:layout_constraintTop_toTopOf="@id/progress_bar"
-        tools:text="25" />
+        tools:text="00" />
 
     <TextView
         android:id="@+id/delimiter"
