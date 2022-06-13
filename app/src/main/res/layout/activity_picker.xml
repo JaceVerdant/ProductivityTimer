@@ -61,7 +61,7 @@
     <View
         android:id="@+id/divider_bottom"
         android:layout_width="32dp"
-        android:layout_height="4dp"
+        android:layout_height="3dp"
         android:background="@color/purple_700"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
